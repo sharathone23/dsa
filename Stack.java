@@ -1,15 +1,18 @@
 public class Stack {
 
     LinkedList linkedList = new LinkedList();
+    int size = 0;
 
     void push(int value){
         linkedList.insertFirst(value);
+        size++;
     }
 
     int pop(){
         if(isEmpty()) throw new EmptyStackException("Cannot pop from an empty stack.");
         int deletedNodeValue = linkedList.head.data;
         linkedList.deleteFirst();
+        size --;
         return deletedNodeValue;
     }
 
@@ -20,6 +23,10 @@ public class Stack {
 
     boolean isEmpty(){
         return linkedList.head == null;
+    }
+
+    int size(){
+        return size;
     }
     
 }
