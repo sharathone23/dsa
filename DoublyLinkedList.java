@@ -4,12 +4,18 @@ public class DoublyLinkedList{
     
     // Inserts new node at the end of the Linked List
     //O(1)
-    void insert(int value){
-        this.insertLast(value);
+    Node insert(int value){
+        return this.insertLast(value);
+    }
+
+    // Inserts new node with given key, value at the end of the Linked List
+    //O(1)
+    Node insert(int key, int value){
+        return this.insertLast(key, value);
     }
 
     //O(1)
-    void insertLast(int value){
+    Node insertLast(int value){
         Node newItem = new Node(value);
         if(head == null){
             head = newItem;
@@ -19,10 +25,25 @@ public class DoublyLinkedList{
             tail.next = newItem;
             tail = newItem;
         }
+        return newItem;
+    }
+
+     //O(1)
+    Node insertLast(int key, int value){
+        Node newItem = new Node(key, value);
+        if(head == null){
+            head = newItem;
+            tail = newItem;
+        } else{
+            newItem.prev = tail;
+            tail.next = newItem;
+            tail = newItem;
+        }
+        return newItem;
     }
 
     //O(1)
-    void insertFirst(int value){
+    Node insertFirst(int value){
         Node newItem = new Node(value);
         if(head == null){
             head = newItem;
@@ -32,6 +53,21 @@ public class DoublyLinkedList{
             head.prev = newItem; // Link back from the old head to the new head
             head = newItem;
         }
+        return newItem;
+    }
+
+    //O(1)
+    Node insertFirst(int key, int value){
+        Node newItem = new Node(key, value);
+        if(head == null){
+            head = newItem;
+            tail = newItem;
+        } else {
+            newItem.next = head;
+            head.prev = newItem; // Link back from the old head to the new head
+            head = newItem;
+        }
+        return newItem;
     }
 
     //O(1)
@@ -101,11 +137,20 @@ public class DoublyLinkedList{
 }
 
 class Node{
+   int key; //used when key value pair is required like in a LRU implementaion
    int data;
    Node next;
    Node prev;
 
    Node(int data) {
+    this.key = data;
+    this.data = data;
+    this.next = null;
+    this.prev = null;
+   }
+
+   Node(int key, int data) {
+    this.key = key;
     this.data = data;
     this.next = null;
     this.prev = null;
