@@ -5,7 +5,7 @@
 - [DoublyLinkedList](Linear/DoublyLinkedList.java)
 - [Stack](Linear/Stack.java)
 - [Queue](Linear/Queue.java)
-- [DeQueue](Linear/Dequeue.java)
+- [Dequeue](Linear/Dequeue.java)
 - [LRUCache](Linear/LRUCache.java)
 
 
