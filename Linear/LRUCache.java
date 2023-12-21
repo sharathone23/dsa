@@ -1,7 +1,7 @@
-package Linear;
+package linear;
 import java.util.*;
 public class LRUCache {
-    HashMap<Integer, Node> nodeReferenceMap;
+    HashMap<Integer, DNode> nodeReferenceMap;
     DoublyLinkedList cache;
     int capacity;
 
@@ -13,7 +13,7 @@ public class LRUCache {
 
     int get(int key){
         if(nodeReferenceMap.containsKey(key)){
-            Node currentItem = nodeReferenceMap.get(key);
+            DNode currentItem = nodeReferenceMap.get(key);
             remove(currentItem); // we can use delete from DoubleLinkedList but its O(n). this is O(1) since we have the reference to node to be deleted
             moveToFront(currentItem); // we can't use the insertFirst since it will create a new reference which is reduntant.
             return cache.head.data;
@@ -23,7 +23,7 @@ public class LRUCache {
 
     void set(int key, int value){
        if(nodeReferenceMap.containsKey(key)){
-            Node node = nodeReferenceMap.get(key);
+            DNode node = nodeReferenceMap.get(key);
             //refresh value and move it to front
             node.data = value;
             //Move to front and make it head
@@ -40,7 +40,7 @@ public class LRUCache {
         }
     }
 
-    void moveToFront(Node node){
+    void moveToFront(DNode node){
         if(nodeReferenceMap.size() == 1) return;
         if(cache.tail == node) { // When node to be moved is a current tail. Update tail
             cache.tail = cache.tail.prev;
@@ -54,7 +54,7 @@ public class LRUCache {
         cache.head = node;
     }
 
-    void remove(Node node){
+    void remove(DNode node){
       if(nodeReferenceMap.size() ==1) return;
       if(cache.tail == node) { // When node to be removed is a current tail. Update tail
         cache.tail = cache.tail.prev;
@@ -66,8 +66,8 @@ public class LRUCache {
         cache.head.prev = null;
         return;
       }
-      Node prev_node = node.prev;
-      Node next_node = node.next;
+      DNode prev_node = node.prev;
+      DNode next_node = node.next;
       prev_node.next = next_node;
       next_node.prev = prev_node;
     }

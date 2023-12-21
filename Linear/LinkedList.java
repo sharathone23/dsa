@@ -1,4 +1,4 @@
-package Linear;
+package linear;
 public class LinkedList{
     Node head;
     Node tail; // Additional reference to tail, this improved the insert operation from O(n) to O(1).
@@ -103,10 +103,8 @@ public class LinkedList{
 }
 
 class Node{
-    
    int data;
    Node next;
-
    Node(int data) {
     this.data = data;
     this.next = null;

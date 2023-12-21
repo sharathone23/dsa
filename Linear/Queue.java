@@ -1,4 +1,4 @@
-package Linear;
+package linear;
 public class Queue {
 
     LinkedList linkedList = new LinkedList();

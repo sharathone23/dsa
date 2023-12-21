@@ -1,23 +1,23 @@
-package Linear;
+package linear;
 public class DoublyLinkedList{
-    Node head;
-    Node tail; // Additional reference to tail, this improved the insert operation from O(n) to O(1).
+    DNode head;
+    DNode tail; // Additional reference to tail, this improved the insert operation from O(n) to O(1).
     
     // Inserts new node at the end of the Linked List
     //O(1)
-    Node insert(int value){
+    DNode insert(int value){
         return this.insertLast(value);
     }
 
     // Inserts new node with given key, value at the end of the Linked List
     //O(1)
-    Node insert(int key, int value){
+    DNode insert(int key, int value){
         return this.insertLast(key, value);
     }
 
     //O(1)
-    Node insertLast(int value){
-        Node newItem = new Node(value);
+    DNode insertLast(int value){
+        DNode newItem = new DNode(value);
         if(head == null){
             head = newItem;
             tail = newItem;
@@ -30,8 +30,8 @@ public class DoublyLinkedList{
     }
 
      //O(1)
-    Node insertLast(int key, int value){
-        Node newItem = new Node(key, value);
+     DNode insertLast(int key, int value){
+         DNode newItem = new DNode(key, value);
         if(head == null){
             head = newItem;
             tail = newItem;
@@ -44,8 +44,8 @@ public class DoublyLinkedList{
     }
 
     //O(1)
-    Node insertFirst(int value){
-        Node newItem = new Node(value);
+    DNode insertFirst(int value){
+        DNode newItem = new DNode(value);
         if(head == null){
             head = newItem;
             tail = newItem;
@@ -58,8 +58,8 @@ public class DoublyLinkedList{
     }
 
     //O(1)
-    Node insertFirst(int key, int value){
-        Node newItem = new Node(key, value);
+    DNode insertFirst(int key, int value){
+        DNode newItem = new DNode(key, value);
         if(head == null){
             head = newItem;
             tail = newItem;
@@ -98,9 +98,9 @@ public class DoublyLinkedList{
     }
 
     // Iterates over the Doubly Linked List sequentially and returns the node if the item data equals node data. Returns null if not found.
-    Node find(int data){
+    DNode find(int data){
         if(head == null) return null;
-        Node current = head;
+        DNode current = head;
         while(current != null){
             if(current.data == data) return current;
             current = current.next;
@@ -111,7 +111,7 @@ public class DoublyLinkedList{
     // Returns true if the delete of the given data node is successfull else false.
     boolean delete(int data){
         if(head == null) return false;
-        Node current = head;
+        DNode current = head;
         while(current != null){
             if(current.data == data){
                 if(current.prev !=null){
@@ -137,20 +137,20 @@ public class DoublyLinkedList{
     }
 }
 
-class Node{
+class DNode{
    int key; //used when key value pair is required like in a LRU implementaion
    int data;
-   Node next;
-   Node prev;
+   DNode next;
+   DNode prev;
 
-   Node(int data) {
+    DNode(int data) {
     this.key = data;
     this.data = data;
     this.next = null;
     this.prev = null;
    }
 
-   Node(int key, int data) {
+    DNode(int key, int data) {
     this.key = key;
     this.data = data;
     this.next = null;

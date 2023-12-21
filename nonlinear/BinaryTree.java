@@ -1,4 +1,4 @@
-package NonLinear;
+package nonlinear;
 import java.util.LinkedList;
 import java.util.Queue;
 public class BinaryTree {

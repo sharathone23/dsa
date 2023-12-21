@@ -1,8 +1,8 @@
 package nonlinear;
 import java.util.*;
 public class Tree {
-    Node root;
-    public Tree(Node root){
+    TNode root;
+    public Tree(TNode root){
         this.root = root;
     }
     /**
@@ -12,10 +12,10 @@ public class Tree {
         print(this.root);
     }
 
-    private void print(Node node){
+    private void print(TNode node){
         if(node == null) return;
         System.out.println(node.data + " ");
-        for(Node childNode: node.children){
+        for(TNode childNode: node.children){
             print(childNode);
         }
     }
@@ -23,41 +23,41 @@ public class Tree {
     /**
      * Searches for a given value in the Tree by iterating all the nodes
      * @param value to be searched in Tree
-     * @return Node which matches the given value Or null if Tree is null or not found.
+     * @return TNode which matches the given value Or null if Tree is null or not found.
      */
-    public Node search(int value){
+    public TNode search(int value){
         if(this.root == null) return null;
         return find(value, root);
     }
 
-    private Node find(int value, Node node){
+    private TNode find(int value, TNode node){
         if(node == null) return null;
         if(node.data == value) return node;
-        for(Node childNode: node.children){
-            Node foundNode = find(value, childNode);
+        for(TNode childNode: node.children){
+            TNode foundNode = find(value, childNode);
             if(foundNode != null) return foundNode;
         }
         return null;
     }
 }
 
-class Node{
-    List<Node> children;
+class TNode{
+    List<TNode> children;
     int data;
-    public Node(int value){
+    public TNode(int value){
         this.data = value;
         this.children = new ArrayList<>();
     }
-    public Node(int value, List<Node> children){
+    public TNode(int value, List<TNode> children){
         this.data = value;
         this.children = children != null ? children : new ArrayList<>();
     }
     /**
-     * Adds a new Node to its children with given value as data
+     * Adds a new TNode to its children with given value as data
      * @param value
      */
     public void add(int value){
-        Node node = new Node(value);
+        TNode node = new TNode(value);
         if(this.children == null){
             this.children = new ArrayList<>();
         }else{
