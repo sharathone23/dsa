@@ -22,7 +22,7 @@ public class Dequeue {
         return deletedNodeValue;
     }
 
-     int removeLast(){
+    int removeLast(){
         if(isEmpty()) throw new EmptyDequeueException("Cannot remove an item from an empty Dequeue.");
         int deletedNodeValue = doublyLinkedList.tail.data;
         doublyLinkedList.deleteLast();
@@ -47,7 +47,7 @@ public class Dequeue {
     int size(){
         return size;
     }
-    
+
 }
 
 class EmptyDequeueException extends RuntimeException {
