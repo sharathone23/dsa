@@ -1,3 +1,4 @@
+package linear;
 public class Dequeue {
 
     DoublyLinkedList doublyLinkedList = new DoublyLinkedList(); // to achieve O(1) for all ops including removeLast which is O(n) in a SinglyLinkedList

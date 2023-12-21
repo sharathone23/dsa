@@ -1,3 +1,4 @@
+package linear;
 import java.util.*;
 public class LRUCache {
     HashMap<Integer, Node> nodeReferenceMap;

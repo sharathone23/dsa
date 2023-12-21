@@ -1,3 +1,4 @@
+package linear;
 public class LinkedList{
     Node head;
     Node tail; // Additional reference to tail, this improved the insert operation from O(n) to O(1).

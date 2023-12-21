@@ -1,3 +1,4 @@
+package linear;
 public class Stack {
 
     LinkedList linkedList = new LinkedList();

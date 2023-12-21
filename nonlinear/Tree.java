@@ -1,7 +1,8 @@
+package nonlinear;
 import java.util.*;
 public class Tree {
     Node root;
-    Tree(Node root){
+    public Tree(Node root){
         this.root = root;
     }
     /**
@@ -43,11 +44,11 @@ public class Tree {
 class Node{
     List<Node> children;
     int data;
-    Node(int value){
+    public Node(int value){
         this.data = value;
         this.children = new ArrayList<>();
     }
-    Node(int value, List<Node> children){
+    public Node(int value, List<Node> children){
         this.data = value;
         this.children = children != null ? children : new ArrayList<>();
     }

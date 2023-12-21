@@ -1,9 +1,9 @@
-import java.util.*;
+package nonlinear;
 import java.util.LinkedList;
 import java.util.Queue;
 public class BinaryTree {
     Node root;
-    BinaryTree(Node root){
+    public BinaryTree(Node root){
         this.root = root;
     }
     /**
@@ -64,6 +64,7 @@ public class BinaryTree {
      * Searches for a given value in the Tree by iterating all the nodes
      * @param value to be searched in Tree
      * @return Node which matches the given value Or null if Tree is null or not found.
+     * Time Complexity - O(n)
      */
     public Node search(int value){
         if(this.root == null) return null;
@@ -224,7 +225,7 @@ class Node{
     Node left;
     Node right;
     int data;
-    Node(int value){
+    public Node(int value){
         this.data = value;
     }
 }
