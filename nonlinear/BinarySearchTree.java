@@ -1,4 +1,4 @@
-package nonlinear;
+package NonLinear;
 public class BinarySearchTree extends BinaryTree {
     Node root;
     public BinarySearchTree(Node root){
