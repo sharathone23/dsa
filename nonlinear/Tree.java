@@ -1,4 +1,4 @@
-package NonLinear;
+package nonlinear;
 import java.util.*;
 public class Tree {
     Node root;
