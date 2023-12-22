@@ -1,5 +1,7 @@
 package nonlinear;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 public class BinaryTree {
     Node root;
@@ -326,6 +328,78 @@ public class BinaryTree {
      */
     public void printBottomView(){
 
+    }
+
+    /**
+     * Naive approach which requires multiple traversals to return Least Common Ancestor for the given two numbers present in the Tree
+     * Builds two paths for two numbers from root to theat number and then iterates over those paths to find the last common node and returns it.
+     * @param n1
+     * @param n2
+     * @return
+     */
+    public Node naiveLCA(int n1, int n2){
+        if(root == null) return null;
+        List<Node> n1Path = new ArrayList<>();
+        List<Node> n2Path = new ArrayList<>();
+        n1Path.add(root);
+        n2Path.add(root);
+        //Fill both paths for n1 and n2 starting from root.
+        fillPath(n1Path, n1, root);
+        fillPath(n2Path, n2, root);
+        //Iterate both paths and find the last common node which is the lca for two given numbers n1 and n2.
+        int i=0;
+        while(i<n1Path.size() && i<n2Path.size()){
+            if(n1Path.get(i) != n2Path.get(i)) break;
+            i++;
+        }
+        return n1Path.get(i-1);
+    }
+
+    private void fillPath(List<Node> path, int n, Node node){
+        if(node == null) return;
+        if(isExists(n,node)){
+            path.add(node);
+        }
+        fillPath(path,n,node.left);
+        fillPath(path,n,node.right);
+    }
+
+    private boolean isExists(int n, Node node){
+        if(node == null) return false;
+        if(node.data == n) return true;
+        return isExists(n, node.left) || isExists(n, node.right);
+    }
+
+    /**
+     * Efficient Approach with single traversal
+     * Returns the Least Common Ancestor for the given two numbers present in the Tree.
+     * This assumes both n1 and n2 are present in the tree and doesn't return null when either one of them is not present
+     * @param n1
+     * @param n2
+     * @return
+     */
+    public Node getLCA(int n1, int n2){
+        return findLCA(root, n1, n2);
+    }
+
+    /**
+     * Possible Scenarios
+     * 1. If current node is either n1 or n2 then this is the LCA for those two numbers
+     * 2. If leftLCA and rightLCA are not null, meaning n1 and n2 present on each side then return current node
+     * 3. If either one of them is not null then that means both n1 and n2 are present on that side , so return the non-null side
+     * 4. If both or null return null
+     * @param node
+     * @param n1
+     * @param n2
+     * @return
+     */
+    private Node findLCA(Node node, int n1, int n2){
+        if(node == null) return null;
+        if(node.data == n1 || node.data == n2) return node;
+        Node leftLCA = findLCA(node.left, n1, n2);
+        Node rightLCA = findLCA(node.right, n1, n2);
+        if(leftLCA != null && rightLCA != null) return node;
+        return leftLCA != null ? leftLCA : rightLCA;
     }
 
 
