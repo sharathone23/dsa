@@ -48,6 +48,9 @@ public class BinaryTree {
         System.out.print(node.data +" ");
     }
 
+    /**
+     * Prints all the nodes level by level in same line with a space
+     */
     public void levelOrderTraversal(){
         if(root == null) return;
         Queue<Node> queue = new LinkedList<>();
@@ -57,6 +60,25 @@ public class BinaryTree {
             System.out.print(node.data +" ");
             if(node.left != null)queue.add(node.left);
             if(node.right != null)queue.add(node.right);
+        }
+    }
+
+    /**
+     * Prints all the nodes level by level in separate lines for each level
+     */
+    public void levelOrderTraversalLineByLine(){
+        if(root == null) return;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            int size = queue.size(); // current queue size in current level
+            for(int i=0;i<size;i++){
+                Node node = queue.poll();
+                System.out.print(node.data +" "); // prints in same line
+                if(node.left != null)queue.add(node.left);
+                if(node.right != null)queue.add(node.right);
+            }
+            System.out.println(); // Adds a new line after a level is processed
         }
     }
 
@@ -218,6 +240,94 @@ public class BinaryTree {
             }
         }
     }
+
+
+    /**
+     * Print the nodes at the given distance to Root, Example: level 1 prints the first level nodes which are left and right of root.
+     */
+    public void printNodesAtLevel(int level){
+        if(level < 0 || root == null) return;
+        if(level == 0){
+            System.out.print(root.data);
+            return;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        int currLevel = 0;
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i=0;i<size;i++){
+                Node node = queue.poll();
+                if(level == currLevel){
+                    System.out.print(node.data + " ");
+                }
+                if(node.left != null)queue.add(node.left);
+                if(node.right != null)queue.add(node.right);
+            }
+            currLevel++;
+        }
+    }
+
+    /**
+     * Prints left view of the BinaryTree
+     * - Prints the first Node at each level in separate lines
+     */
+    public void printLeftView(){
+        if(root == null) return;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i=0;i<size;i++){
+                Node node = queue.poll();
+                if(i == 0){
+                    System.out.print(node.data + " ");
+                }
+                if(node.left != null)queue.add(node.left);
+                if(node.right != null)queue.add(node.right);
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Prints right view of the BinaryTree
+     * - Prints the last Node at each level in separate lines
+     */
+    public void printRightView(){
+        if(root == null) return;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i=0;i<size;i++){
+                Node node = queue.poll();
+                if(i == size-1){
+                    System.out.print(node.data + " ");
+                }
+                if(node.left != null)queue.add(node.left);
+                if(node.right != null)queue.add(node.right);
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Prints top view of the BinaryTree
+     * Prints the Nodes in same line separated by a space
+     */
+    public void printTopView(){
+
+    }
+
+    /**
+     * Prints bottom view of the BinaryTree
+     * Prints the Nodes in same line separated by a space
+     */
+    public void printBottomView(){
+
+    }
+
 
 }
 
