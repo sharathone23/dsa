@@ -13,3 +13,4 @@
 - [Tree](nonlinear/Tree.java)
 - [BinaryTree](nonlinear/BinaryTree.java)
 - [BinarySearchTree](nonlinear/BinarySearchTree.java)
+- [Trie](nonlinear/Trie.java)
