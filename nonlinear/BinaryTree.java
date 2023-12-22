@@ -403,6 +403,31 @@ public class BinaryTree {
     }
 
 
+    Node prev = null; // global temp variable for storing a reference to prev while building a DLL from Tree
+    Node head = null; // global variable for head of the DLL
+    /**
+     * Method to convert the BinaryTree to a DoublyLinkedList in the order of InOrder Traversal, Uses existing reference of Tree Node left and right for prev and next in DLL.
+     * @return
+     */
+    public Node convertToDDL(){
+        inOrderForDDL(root);
+        return head;
+    }
+
+    private void inOrderForDDL(Node node){
+        if(node == null) return;
+        inOrderForDDL(node.left);
+        if(prev == null){
+            head = node;
+        }else{
+            node.left = prev;
+            prev.right = node;
+        }
+        prev = node;
+        inOrderForDDL(node.right);
+    }
+
+
 }
 
 class Node{
