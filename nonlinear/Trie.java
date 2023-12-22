@@ -25,7 +25,7 @@ public class Trie {
             currentNode.children.put(currChar, currCharTrieNode);
             currentNode = currCharTrieNode;
         }
-        currentNode.isWord = true;
+        currentNode.isWord = true; // Marks the isWord of lastNode as true to identify this as a valid word
     }
 
     /**
@@ -36,7 +36,7 @@ public class Trie {
     boolean search(String word){
         if(word == null || word.isEmpty()) return false;
         TrieNode lastCharNode = getLastCharTrieNode(word);
-        return lastCharNode != null && lastCharNode.isWord;
+        return lastCharNode != null && lastCharNode.isWord; // Uses the last characters node to find out if it's a valid word
     }
 
    /**
@@ -45,9 +45,10 @@ public class Trie {
     boolean startsWith(String prefix){
         if(prefix == null || prefix.isEmpty()) return false;
         TrieNode lastCharNode = getLastCharTrieNode(prefix);
-        return lastCharNode != null;
+        return lastCharNode != null; // Uses the last characters node to find out if it's a valid prefix in the tree
     }
 
+    //Iterates over the given word characters nodes children level by level until a char node is not found or all chars are found and returns the last char node reference 
     private TrieNode getLastCharTrieNode(String word){
         TrieNode currentNode = root;
         for(int i=0;i<word.length();i++){
