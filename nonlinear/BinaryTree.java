@@ -459,6 +459,25 @@ public class BinaryTree {
         inOrderForDDL(node.right);
     }
 
+    int diameter = Integer.MIN_VALUE;
+    /**
+     * Returns the diameter which is the maximum distance in between any two nodes in the Tree
+     * @return
+     */
+    public int getDiameter(){
+        diameter = Integer.MIN_VALUE; // to reset for multiple calls on same instance of Tree
+        calculateDiameter(root);
+        return diameter;
+    }
+
+    private int calculateDiameter(Node node){
+        if(node == null) return 0;
+        int leftHeight = calculateDiameter(node.left);
+        int rightHeight = calculateDiameter(node.right);
+        diameter =  Math.max(diameter, 1 + leftHeight + rightHeight);
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
 
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree(new Node(1));
@@ -506,6 +525,9 @@ public class BinaryTree {
 
         System.out.println("-- printRightView -- ");
         tree.printRightView();
+
+        System.out.println("-- getDiameter()");
+        System.out.println(tree.getDiameter());
     }
 
 
