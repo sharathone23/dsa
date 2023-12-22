@@ -1,8 +1,6 @@
 package nonlinear;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+
 public class BinaryTree {
     Node root;
     public BinaryTree(Node root){
@@ -39,8 +37,8 @@ public class BinaryTree {
     /**
      * Prints all the values of Nodes by Iterating through full tree in a Depth First Search - In Order Traversal( Left-Right-Root)
      */
-    public void postOrderTraversal(Node node){
-        postOrder(node);
+    public void postOrderTraversal(){
+        postOrder(root);
     }
 
     private void postOrder(Node node){
@@ -81,6 +79,40 @@ public class BinaryTree {
                 if(node.right != null)queue.add(node.right);
             }
             System.out.println(); // Adds a new line after a level is processed
+        }
+    }
+
+    /**
+     * Prints all the nodes navigating level by level in spiral form in same line starting from root and right to left in next level, left to right in next level, etc.
+     */
+    public void levelOrderTraversalSpiralForm(){
+        if(root == null) return;
+        Deque<Node> dll = new ArrayDeque<>();
+        dll.addLast(root);
+        boolean fromRight = false;
+        while(!dll.isEmpty()){
+            int size = dll.size(); // current dll size in current level
+            for(int i=0;i<size;i++){
+                Node node = fromRight ? dll.removeLast() : dll.removeFirst();
+                System.out.print(node.data +" "); // prints in same line
+                if(fromRight){
+                    if(node.right != null){
+                        dll.addFirst(node.right);
+                    }
+                    if(node.left != null){
+                        dll.addFirst(node.left);
+                    }
+                }else{
+                    if(node.left != null){
+                        dll.addLast(node.left);
+                    }
+                    if(node.right != null){
+                        dll.addLast(node.right);
+                    }
+
+                }
+            }
+            fromRight = !fromRight;
         }
     }
 
@@ -425,6 +457,55 @@ public class BinaryTree {
         }
         prev = node;
         inOrderForDDL(node.right);
+    }
+
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree(new Node(1));
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+        tree.root.right.left = new Node(6);
+        tree.root.right.right = new Node(7);
+        System.out.println();
+        System.out.println("-- inOrderTraversal --");
+        tree.inOrderTraversal();
+        System.out.println();
+
+        System.out.println("-- preOrderTraversal --");
+        tree.preOrderTraversal();
+        System.out.println();
+
+        System.out.println("-- postOrderTraversal --");
+        tree.postOrderTraversal();
+        System.out.println();
+
+        System.out.println("-- levelOrderTraversal --");
+        tree.levelOrderTraversal();
+        System.out.println();
+
+        System.out.println("-- levelOrderTraversalLineByLine --");
+        tree.levelOrderTraversalLineByLine();
+
+        System.out.println("-- levelOrderTraversalSpiralForm -- ");
+        tree.levelOrderTraversalSpiralForm();
+        System.out.println();
+
+        System.out.println("-- getHeight -- ");
+        System.out.println(tree.getHeight());
+
+        System.out.println("-- getMin -- ");
+        System.out.println(tree.getMin());
+
+        System.out.println("-- getMax -- ");
+        System.out.println(tree.getMax());
+
+        System.out.println("-- printLeftView -- ");
+        tree.printLeftView();
+
+        System.out.println("-- printRightView -- ");
+        tree.printRightView();
     }
 
 
