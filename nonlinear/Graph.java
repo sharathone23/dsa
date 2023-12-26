@@ -4,6 +4,15 @@ import java.util.*;
 
 public class Graph {
     List<GraphNode> nodes = new ArrayList<>();
+    public GraphNode findNode(int data) {
+        for (GraphNode node : nodes) {
+            if (node.data == data) {
+                return node;
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Performs a Depth First Search(DFS) traversal through all the vertices in the Graph and prints in same line with spaces
@@ -124,26 +133,3 @@ public class Graph {
     }
 }
 
-class GraphNode{
-    int data;
-    List<GraphNode> neighbours;
-
-    GraphNode(){
-        this.data = 0;
-        this.neighbours = new ArrayList<>();
-    }
-
-    GraphNode(int data){
-        this.data = data;
-        this.neighbours = new ArrayList<>();
-    }
-
-    void addNeighbor(GraphNode neighbor) {
-        this.neighbours.add(neighbor);
-    }
-
-    void removeNeighbor(GraphNode neighbor) {
-        this.neighbours.remove(neighbor);
-    }
-
-}
