@@ -14,4 +14,6 @@
 - [BinaryTree](nonlinear/BinaryTree.java)
 - [BinarySearchTree](nonlinear/BinarySearchTree.java)
 - [Trie](nonlinear/Trie.java)
+- [BinaryHeap](nonlinear/BinaryHeap.java)
+- [PriorityQueue](nonlinear/PriorityQueue.java)
 - [Graph](nonlinear/Graph.java)
