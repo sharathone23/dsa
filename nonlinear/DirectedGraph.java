@@ -1,9 +1,6 @@
 package nonlinear;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class DirectedGraph extends Graph{
 
@@ -30,6 +27,60 @@ public class DirectedGraph extends Graph{
             v1Node.addNeighbor(v2Node);
         }
     }
+
+    /**
+     * Checks if a cycle exists in the graph using DFS.
+     *
+     * @return true if a cycle exists, false otherwise.
+     */
+    public boolean isCycleExists() {
+        Set<GraphNode> visited = new HashSet<>();
+        Set<GraphNode> recursionStack = new HashSet<>();
+
+        for (GraphNode node : nodes) {
+            if (!visited.contains(node)) {
+                if (isCyclicDFS(node, visited, recursionStack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Helper method to perform DFS and check for cycles.
+     *
+     * @param node           The current node.
+     * @param visited        Set of visited nodes.
+     * @param recursionStack Set of nodes in the current recursion stack.
+     * @return true if a cycle is found, false otherwise.
+     */
+    private boolean isCyclicDFS(GraphNode node, Set<GraphNode> visited, Set<GraphNode> recursionStack) {
+        if (recursionStack.contains(node)) {
+            // If the node is in the recursion stack, a cycle is found.
+            return true;
+        }
+        if (visited.contains(node)) {
+            // If the node is already visited and not in the recursion stack, no cycle is detected here.
+            return false;
+        }
+
+        // Add the node to visited and recursion stack sets.
+        visited.add(node);
+        recursionStack.add(node);
+
+        // Recur for all the vertices adjacent to this vertex.
+        for (GraphNode neighbour : node.neighbours) {
+            if (isCyclicDFS(neighbour, visited, recursionStack)) {
+                return true;
+            }
+        }
+
+        // Remove the node from recursion stack before returning.
+        recursionStack.remove(node);
+        return false;
+    }
+
 
     /**Prints the Vertices in the Topological Order
      * Topological sorting is a linear ordering of vertices in a graph such that for every directed edge UV from vertex U to vertex V, U comes before V in the ordering.
@@ -90,19 +141,19 @@ public class DirectedGraph extends Graph{
     }
 
     public static void main(String[] args) {
-        DirectedGraph graph = new DirectedGraph();
+        DirectedGraph g = new DirectedGraph();
 
         // Add edges to the graph to form a Directed Acyclic Graph (DAG)
-        graph.addEdge(5, 2);
-        graph.addEdge(5, 0);
-        graph.addEdge(4, 0);
-        graph.addEdge(4, 1);
-        graph.addEdge(2, 3);
-        graph.addEdge(3, 1);
+        g.addEdge(5, 2);
+        g.addEdge(5, 0);
+        g.addEdge(4, 0);
+        g.addEdge(4, 1);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
 
         // Print the topological sort order
         System.out.println("Topological Sort Order:");
-        graph.printTopologicalSort();
+        g.printTopologicalSort();
     }
 
 }
