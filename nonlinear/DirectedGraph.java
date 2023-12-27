@@ -6,6 +6,7 @@ public class DirectedGraph extends Graph{
 
     /**
      * Adds an edge from v1 to v2. Creates new vertices if not exists or else uses existing ones.
+     * This is for Unweighted Directed Graphs
      * @param v1
      * @param v2
      */
@@ -25,6 +26,32 @@ public class DirectedGraph extends Graph{
 
         if (!v1Node.neighbours.contains(v2Node)) {
             v1Node.addNeighbor(v2Node);
+        }
+    }
+
+    /**
+     * Adds an edge from v1 to v2. Creates new vertices if not exists or else uses existing ones.
+     * This is for Weighted Directed Graphs
+     * @param v1
+     * @param v2
+     */
+    void addWeightedEdge(int v1, int v2, int weight) {
+        if(v1 == v2) return;
+        GraphNode v1Node = findNode(v1);
+        GraphNode v2Node = findNode(v2);
+
+        if (v1Node == null) {
+            v1Node = new GraphNode(v1);
+            nodes.add(v1Node);
+        }
+        if (v2Node == null) {
+            v2Node = new GraphNode(v2);
+            nodes.add(v2Node);
+        }
+
+        if (!v1Node.neighbours.contains(v2Node)) {
+            v1Node.addNeighbor(v2Node);
+            v2Node.weightsMap.put(v1Node, weight); // Add weight from v1Node to the weightsMap.
         }
     }
 
@@ -82,16 +109,17 @@ public class DirectedGraph extends Graph{
     }
 
 
-    /**Prints the Vertices in the Topological Order
+    /**Returns the Vertices in the Topological Sort Order
      * Topological sorting is a linear ordering of vertices in a graph such that for every directed edge UV from vertex U to vertex V, U comes before V in the ordering.
      * This concept is independent of whether a graph is weighted or unweighted, but it should be Directed
      */
-    void printTopologicalSort(){
+    List<Integer> getTopologicalSortOrderList(){
+        List<Integer> result = new ArrayList<>();
 
         //Return if cycle exists, Topological sort is for Acyclic graphs
         if(isCycleExists()){
             System.out.println("Cycle Exists - Topological Order requires Acyclic graphs");
-            return;
+            return result;
         }
         //Find degree of each vertex
         Map<Integer, Integer> degreeCount = new HashMap<>();
@@ -109,7 +137,7 @@ public class DirectedGraph extends Graph{
         }
         while(!queue.isEmpty()){
             Integer vertex = queue.poll();// Remove one vertex and decrement its neighbours in degree by 1
-            System.out.print(vertex +" ");
+            result.add(vertex);
             GraphNode node = findNode(vertex);
             for(GraphNode neighbour: node.neighbours){
                 degreeCount.put(neighbour.data, degreeCount.get(neighbour.data)-1);
@@ -119,6 +147,7 @@ public class DirectedGraph extends Graph{
                 }
             }
         }
+        return result;
     }
 
     /**
@@ -129,7 +158,33 @@ public class DirectedGraph extends Graph{
      *  @param source
      */
     void findShortestPathUsingTopologicalSort(int source){
-        //TODO
+        if(findNode(source) == null || isCycleExists()) return; // If source is not part of the graph or there is a Cycle in the Graph
+
+        List<Integer> topSortOrderList = getTopologicalSortOrderList(); // Create the topological sort order list
+        int[] distanceArray = new int[nodes.size()];
+        // Initialize all the distances to Infinite
+        Arrays.fill(distanceArray, Integer.MAX_VALUE);
+        distanceArray[source] = 0; // Set source distance to 0 as the distance to itself is 0.
+        for(int topSortOrderVertex: topSortOrderList){ // Iterate over topological sort order list neighbours and calculate the distance based on current parent node.
+            // Process only if the vertex has been reached
+            if (distanceArray[topSortOrderVertex] != Integer.MAX_VALUE) {
+                GraphNode currentVertexNode = findNode(topSortOrderVertex);
+                for (GraphNode neighbour : currentVertexNode.neighbours) {
+                    int weight = getWeight(topSortOrderVertex, neighbour.data);
+                    if (weight != Integer.MAX_VALUE && distanceArray[neighbour.data] > distanceArray[topSortOrderVertex] + weight) {
+                        distanceArray[neighbour.data] = distanceArray[topSortOrderVertex] + weight;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < distanceArray.length; i++){
+            if(distanceArray[i] == Integer.MAX_VALUE) {
+                System.out.println("Distance from source " + source + " to vertex " + i + " is not reachable");
+            } else {
+                System.out.println("Distance from source " + source + " to vertex " + i + " is " + distanceArray[i]);
+            }
+        }
     }
 
     void findShortestPathUsingDijkstra(int source){
@@ -140,20 +195,46 @@ public class DirectedGraph extends Graph{
         //TODO
     }
 
+    private int getWeight(int v1, int v2){
+        if(v1 == v2) return 0;
+        GraphNode v1Node = findNode(v1);
+        GraphNode v2Node = findNode(v2);
+        if(v1Node == null || v2Node==null) return Integer.MAX_VALUE;
+        if (!v1Node.neighbours.contains(v2Node)) {
+            return Integer.MAX_VALUE;
+        }else{
+            return v2Node.weightsMap.get(v1Node);
+        }
+    }
+
     public static void main(String[] args) {
-        DirectedGraph g = new DirectedGraph();
+        DirectedGraph unweightedDirectedGraph = new DirectedGraph();
 
         // Add edges to the graph to form a Directed Acyclic Graph (DAG)
-        g.addEdge(5, 2);
-        g.addEdge(5, 0);
-        g.addEdge(4, 0);
-        g.addEdge(4, 1);
-        g.addEdge(2, 3);
-        g.addEdge(3, 1);
+        unweightedDirectedGraph.addEdge(5, 2);
+        unweightedDirectedGraph.addEdge(5, 0);
+        unweightedDirectedGraph.addEdge(4, 0);
+        unweightedDirectedGraph.addEdge(4, 1);
+        unweightedDirectedGraph.addEdge(2, 3);
+        unweightedDirectedGraph.addEdge(3, 1);
 
         // Print the topological sort order
-        System.out.println("Topological Sort Order:");
-        g.printTopologicalSort();
+        System.out.println("Topological Sort Order for unweightedDirectedGraph:");
+        List<Integer> topSortOrderList = unweightedDirectedGraph.getTopologicalSortOrderList();
+        for(int v: topSortOrderList){
+            System.out.print(v + " ");
+        }
+
+
+        DirectedGraph weightedDirectedGraph = new DirectedGraph();
+        weightedDirectedGraph.addWeightedEdge(0, 1, 1);
+        weightedDirectedGraph.addWeightedEdge(1, 2,3);
+        weightedDirectedGraph.addWeightedEdge(2, 3,4);
+        weightedDirectedGraph.addWeightedEdge(1, 3,2);
+        System.out.println();
+        System.out.println("ShortestPathUsingTopologicalSortOrder for Weighted Directed Acyclic Graph from source 2 is");
+
+        weightedDirectedGraph.findShortestPathUsingTopologicalSort(1);
     }
 
 }
