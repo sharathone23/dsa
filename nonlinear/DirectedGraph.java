@@ -39,6 +39,7 @@ public class DirectedGraph extends Graph{
 
         //Return if cycle exists, Topological sort is for Acyclic graphs
         if(isCycleExists()){
+            System.out.println("Cycle Exists - Topological Order requires Acyclic graphs");
             return;
         }
         //Find degree of each vertex
@@ -87,4 +88,21 @@ public class DirectedGraph extends Graph{
     void findShortestPathUsingBellmanFord (int source){
         //TODO
     }
+
+    public static void main(String[] args) {
+        DirectedGraph graph = new DirectedGraph();
+
+        // Add edges to the graph to form a Directed Acyclic Graph (DAG)
+        graph.addEdge(5, 2);
+        graph.addEdge(5, 0);
+        graph.addEdge(4, 0);
+        graph.addEdge(4, 1);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 1);
+
+        // Print the topological sort order
+        System.out.println("Topological Sort Order:");
+        graph.printTopologicalSort();
+    }
+
 }
