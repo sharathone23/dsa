@@ -187,8 +187,61 @@ public class DirectedGraph extends Graph{
         }
     }
 
+    /**
+     * Implements Dijkstra's algorithm to find the shortest path from a single source node to all other nodes in the graph.
+     * This method assumes that the graph is a weighted graph with non-negative weights.
+     * The algorithm maintains a priority queue to keep track of the next minimum distance vertices and updates
+     * the shortest distances from the source node to each node in the graph.
+     *
+     * @param source The source node from which to calculate the shortest paths.
+     * Note: Algorithm assumes nodes starting from 0.
+     */
     void findShortestPathUsingDijkstra(int source){
-        //TODO
+        GraphNode sourceNode = findNode(source);
+        if(sourceNode == null) return;// return if source node doesn't exist in the Graph.
+        boolean[] finalizedArray = new boolean[nodes.size()];
+
+
+       // Create a distance map used to track shortest distance.
+        Map<GraphNode, Integer> distanceMap = new HashMap<>();
+       // set all distances to Integer.MAX_VALUE
+        for (GraphNode node : nodes) {
+            distanceMap.put(node, Integer.MAX_VALUE);
+        }
+        distanceMap.put(sourceNode, 0);// set the distance to the source node to 0
+
+        //Use Min heap to keep track of next minimum distance vertices, with a comparator to compare based on weight
+        java.util.PriorityQueue<GraphNode> minHeap = new java.util.PriorityQueue<>(new Comparator<>() {
+            @Override
+            public int compare(GraphNode node1, GraphNode node2) {
+                return Integer.compare(distanceMap.get(node1), distanceMap.get(node2));
+            }
+        });
+        minHeap.add(sourceNode);
+        while(!minHeap.isEmpty()){
+            GraphNode current = minHeap.poll();
+            if(finalizedArray[current.data]) continue;
+            finalizedArray[current.data] = true;
+            for(GraphNode neighbour: current.neighbours){
+                int weight = getWeight(current.data, neighbour.data);
+                if (weight != Integer.MAX_VALUE && distanceMap.get(neighbour) > distanceMap.get(current) + weight) {
+                    distanceMap.put(neighbour,distanceMap.get(current) + weight);
+                    if (!finalizedArray[neighbour.data]) {
+                        minHeap.add(neighbour);
+                    }
+                }
+            }
+        }
+        for (Map.Entry<GraphNode, Integer> entry : distanceMap.entrySet()) {
+            GraphNode node = entry.getKey();
+            int distance = entry.getValue();
+            if (distance == Integer.MAX_VALUE) {
+                System.out.println("Distance from source "+source+" to vertex " + node.data + " is not reachable");
+            } else {
+                System.out.println("Distance from source "+source+" to vertex " + node.data + " is " + distance);
+            }
+        }
+
     }
 
     void findShortestPathUsingBellmanFord (int source){
@@ -235,6 +288,22 @@ public class DirectedGraph extends Graph{
         System.out.println("ShortestPathUsingTopologicalSortOrder for Weighted Directed Acyclic Graph from source 2 is");
 
         weightedDirectedGraph.findShortestPathUsingTopologicalSort(1);
+
+
+
+        DirectedGraph weightedDirectedGraph2 = new DirectedGraph();// Note: Algorithm assumes nodes starting from 0.
+        weightedDirectedGraph2.addWeightedEdge(0, 1, 2);
+        weightedDirectedGraph2.addWeightedEdge(0, 2,4);
+        weightedDirectedGraph2.addWeightedEdge(1, 2,1);
+        weightedDirectedGraph2.addWeightedEdge(1, 3,7);
+        weightedDirectedGraph2.addWeightedEdge(2, 4,3);
+        weightedDirectedGraph2.addWeightedEdge(4, 5,5);
+        weightedDirectedGraph2.addWeightedEdge(4, 3,2);
+        weightedDirectedGraph2.addWeightedEdge(3, 5,1);
+        System.out.println();
+        System.out.println("Shortest Path Using Dijkstra for Weighted Directed Graph from source 0 is");
+
+        weightedDirectedGraph2.findShortestPathUsingDijkstra(0);
     }
 
 }
