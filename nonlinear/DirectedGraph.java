@@ -200,8 +200,6 @@ public class DirectedGraph extends Graph{
         GraphNode sourceNode = findNode(source);
         if(sourceNode == null) return;// return if source node doesn't exist in the Graph.
         boolean[] finalizedArray = new boolean[nodes.size()];
-
-
        // Create a distance map used to track shortest distance.
         Map<GraphNode, Integer> distanceMap = new HashMap<>();
        // set all distances to Integer.MAX_VALUE
@@ -245,7 +243,34 @@ public class DirectedGraph extends Graph{
     }
 
     void findShortestPathUsingBellmanFord (int source){
-        //TODO
+        if(findNode(source) == null) return; // If source is not part of the graph or there is a Cycle in the Graph
+
+        int[] distanceArray = new int[nodes.size()];
+        // Initialize all the distances to Infinite
+        Arrays.fill(distanceArray, Integer.MAX_VALUE);
+        distanceArray[source] = 0; // Set source distance to 0 as the distance to itself is 0.
+        int count = 0;
+        while(count < nodes.size()-1){
+            for(GraphNode node: nodes){ // Iterate over all vertices V-1 times
+                if(count == nodes.size() -1 ) break;
+                for (GraphNode neighbour : node.neighbours) {
+                    int weight = getWeight(node.data, neighbour.data);
+                    if (weight != Integer.MAX_VALUE && distanceArray[neighbour.data] > distanceArray[node.data] + weight) {
+                        distanceArray[neighbour.data] = distanceArray[node.data] + weight;
+                    }
+                }
+            }
+            count++;
+        }
+
+
+        for(int i = 0; i < distanceArray.length; i++){
+            if(distanceArray[i] == Integer.MAX_VALUE) {
+                System.out.println("Distance from source " + source + " to vertex " + i + " is not reachable");
+            } else {
+                System.out.println("Distance from source " + source + " to vertex " + i + " is " + distanceArray[i]);
+            }
+        }
     }
 
     private int getWeight(int v1, int v2){
@@ -304,6 +329,21 @@ public class DirectedGraph extends Graph{
         System.out.println("Shortest Path Using Dijkstra for Weighted Directed Graph from source 0 is");
 
         weightedDirectedGraph2.findShortestPathUsingDijkstra(0);
+
+
+        DirectedGraph weightedDirectedGraph3 = new DirectedGraph();// Note: Algorithm assumes nodes starting from 0.
+        weightedDirectedGraph3.addWeightedEdge(0, 1, 2);
+        weightedDirectedGraph3.addWeightedEdge(0, 2,4);
+        weightedDirectedGraph3.addWeightedEdge(1, 2,1);
+        weightedDirectedGraph3.addWeightedEdge(1, 3,7);
+        weightedDirectedGraph3.addWeightedEdge(2, 4,3);
+        weightedDirectedGraph3.addWeightedEdge(4, 5,5);
+        weightedDirectedGraph3.addWeightedEdge(4, 3,2);
+        weightedDirectedGraph3.addWeightedEdge(3, 5,1);
+        System.out.println();
+        System.out.println("Shortest Path Using Bellman Ford for Weighted Directed Graph from source 0 is");
+
+        weightedDirectedGraph3.findShortestPathUsingBellmanFord(0);
     }
 
 }
