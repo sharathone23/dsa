@@ -17,3 +17,5 @@
 - [BinaryHeap](nonlinear/BinaryHeap.java)
 - [PriorityQueue](nonlinear/PriorityQueue.java)
 - [Graph](nonlinear/Graph.java)
+- [UndirectedGraph](nonlinear/UndirectedGraph.java)
+- [DirectedGraph](nonlinear/DirectedGraph.java)
