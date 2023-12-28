@@ -155,6 +155,7 @@ public class DirectedGraph extends Graph{
      * Topological sorting is a linear ordering of vertices in a graph such that for every directed edge UV from vertex U to vertex V, U comes before V in the ordering.
      * This concept is independent of whether a graph is weighted or unweighted, but it should be Directed
      * Note: Applies only for Directed Acyclic Graph (DAG's)
+     * Time Complexity- O(V+E)
      *  @param source
      */
     void findShortestPathUsingTopologicalSort(int source){
@@ -192,6 +193,7 @@ public class DirectedGraph extends Graph{
      * This method assumes that the graph is a weighted graph with non-negative weights.
      * The algorithm maintains a priority queue to keep track of the next minimum distance vertices and updates
      * the shortest distances from the source node to each node in the graph.
+     * Time Complexity - O((V+E)LogV)
      *
      * @param source The source node from which to calculate the shortest paths.
      * Note: Algorithm assumes nodes starting from 0.
@@ -242,6 +244,21 @@ public class DirectedGraph extends Graph{
 
     }
 
+    /**
+     * Implements the Bellman-Ford algorithm to find the shortest path from a single source node to all other nodes in the graph.
+     * This method is particularly useful in graphs where edges can have negative weights.
+     * The Bellman-Ford algorithm can handle negative weights and is also capable of detecting negative weight cycles in the graph.
+     * If a negative weight cycle is detected, the algorithm reports it, as such cycles imply that no shortest path exists (due to the possibility of indefinitely decreasing path lengths).
+     *
+     * @param source The source node from which to calculate the shortest paths.
+     *                The method assumes that the source is a valid node within the graph.
+     *                If the source node is not found in the graph, the method will return without performing any calculations.
+     *                It is important to ensure that node indices start from 0 and are continuous.
+     *
+     * Time Complexity: O(V*E), where V is the number of vertices and E is the number of edges in the graph.
+     *                  This is because the main part of the algorithm runs V-1 times and in each iteration, it processes all E edges.
+     * Space Complexity: O(V), for storing the distance array and additional data structures for bookkeeping.
+     */
     void findShortestPathUsingBellmanFord (int source){
         if(findNode(source) == null) return; // If source is not part of the graph or there is a Cycle in the Graph
 
@@ -261,6 +278,17 @@ public class DirectedGraph extends Graph{
                 }
             }
             count++;
+        }
+
+        // Additional check for negative weight cycle
+        for (GraphNode node : nodes) {
+            for (GraphNode neighbour : node.neighbours) {
+                int weight = getWeight(node.data, neighbour.data);
+                if (distanceArray[node.data] != Integer.MAX_VALUE && distanceArray[neighbour.data] > distanceArray[node.data] + weight) {
+                    System.out.println("Graph contains a negative weight cycle");
+                    return;
+                }
+            }
         }
 
 
@@ -330,6 +358,11 @@ public class DirectedGraph extends Graph{
 
         weightedDirectedGraph2.findShortestPathUsingDijkstra(0);
 
+        System.out.println();
+        System.out.println("Shortest Path Using Bellman Ford for same Weighted Directed Graph from source 0 is");
+
+        weightedDirectedGraph2.findShortestPathUsingBellmanFord(0);
+
 
         DirectedGraph weightedDirectedGraph3 = new DirectedGraph();// Note: Algorithm assumes nodes starting from 0.
         weightedDirectedGraph3.addWeightedEdge(0, 1, 2);
@@ -340,8 +373,12 @@ public class DirectedGraph extends Graph{
         weightedDirectedGraph3.addWeightedEdge(4, 5,5);
         weightedDirectedGraph3.addWeightedEdge(4, 3,2);
         weightedDirectedGraph3.addWeightedEdge(3, 5,1);
+        // Adding edges to create a negative weight cycle
+        weightedDirectedGraph3.addWeightedEdge(3, 1, -10);
+        weightedDirectedGraph3.addWeightedEdge(1, 4, -2);
+        weightedDirectedGraph3.addWeightedEdge(4, 3, -1);
         System.out.println();
-        System.out.println("Shortest Path Using Bellman Ford for Weighted Directed Graph from source 0 is");
+        System.out.println("Shortest Path Using Bellman Ford for Weighted Negative Cyclic Directed Graph from source 0 is");
 
         weightedDirectedGraph3.findShortestPathUsingBellmanFord(0);
     }
