@@ -1,12 +1,12 @@
 # Implementations for fundemental Data Structures using Java
 
 ## Linear
-- [LinkedList](Linear/LinkedList.java)
-- [DoublyLinkedList](Linear/DoublyLinkedList.java)
-- [Stack](Linear/Stack.java)
-- [Queue](Linear/Queue.java)
-- [Dequeue](Linear/Dequeue.java)
-- [LRUCache](Linear/LRUCache.java)
+- [LinkedList](linear/LinkedList.java)
+- [DoublyLinkedList](linear/DoublyLinkedList.java)
+- [Stack](linear/Stack.java)
+- [Queue](linear/Queue.java)
+- [Dequeue](linear/Dequeue.java)
+- [LRUCache](linear/LRUCache.java)
 
 
 ## Non Linear
