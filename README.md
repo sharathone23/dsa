@@ -1,5 +1,4 @@
-# Implementations for fundemental Data Structures using Java
-
+# Implementations for fundamental Data Structures & Algorithms using Java
 ## Linear
 - [LinkedList](linear/LinkedList.java)
 - [DoublyLinkedList](linear/DoublyLinkedList.java)
@@ -7,8 +6,6 @@
 - [Queue](linear/Queue.java)
 - [Dequeue](linear/Dequeue.java)
 - [LRUCache](linear/LRUCache.java)
-
-
 ## Non Linear
 - [Tree](nonlinear/Tree.java)
 - [BinaryTree](nonlinear/BinaryTree.java)
@@ -19,3 +16,10 @@
 - [Graph](nonlinear/Graph.java)
 - [UndirectedGraph](nonlinear/UndirectedGraph.java)
 - [DirectedGraph](nonlinear/DirectedGraph.java)
+## Sorting
+- [BubbleSort](sorting/BubbleSort.java)
+- [SelectionSort](sorting/SelectionSort.java)
+- [InsertionSort](sorting/InsertionSort.java)
+- [MergeSort](sorting/MergeSort.java)
+- [QuickSort](sorting/QuickSort.java)
+- [HeapSort](sorting/HeapSort.java)
