@@ -1,4 +1,4 @@
-# Implementations for fundamental Data Structures & Algorithms using Java
+# Java Implementations of Fundamental Data Structures and Algorithms
 ## Linear
 - [LinkedList](linear/LinkedList.java)
 - [DoublyLinkedList](linear/DoublyLinkedList.java)
