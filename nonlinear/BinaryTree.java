@@ -162,7 +162,6 @@ public class BinaryTree {
 
     private int getMinimumValue(Node node){
         if(node == null) return Integer.MAX_VALUE; // Return max value for null to ensure it doesn't affect the min comparison
-        if(node.left == null && node.right == null) return node.data;
         int leftMin = getMinimumValue(node.left);
         int rightMin = getMinimumValue(node.right);
         return Math.min(node.data, Math.min(leftMin, rightMin));
@@ -180,7 +179,6 @@ public class BinaryTree {
 
     private int getMaximumValue(Node node){
         if(node == null) return Integer.MIN_VALUE; // Return min value for null to ensure it doesn't affect the max comparison
-        if(node.left == null && node.right == null) return node.data;
         int leftMax = getMaximumValue(node.left);
         int rightMax = getMaximumValue(node.right);
         return Math.max(node.data, Math.max(leftMax, rightMax));
