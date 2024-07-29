@@ -135,6 +135,44 @@ public class DoublyLinkedList{
         }
         return false; // Data not found in the list
     }
+
+    void print(){
+        DNode current = head;
+        while(current !=null){
+            System.out.print(current.data +" ");
+            current = current.next;
+        }
+        System.out.println();
+        System.out.println("Current Head "+head.data);
+        System.out.println("Current Tail "+tail.data);
+    }
+
+    void reverse(){
+        DNode prev = null;
+        DNode current = head;
+        DNode oldHead = head;
+        while(current != null){
+            DNode temp = current.next;
+            current.next = prev;
+            current.prev = temp;
+            prev = current;
+            current = temp;
+        }
+        head = prev;
+        tail = oldHead;
+    }
+
+    public static void main(String args[]){
+        DoublyLinkedList dll = new DoublyLinkedList();
+        dll.insertLast(1);
+        dll.insertLast(2);
+        dll.insertLast(3);
+        dll.insertLast(4);
+        dll.insertLast(5);
+        dll.print();
+        dll.reverse();
+        dll.print();
+    }
 }
 
 class DNode{

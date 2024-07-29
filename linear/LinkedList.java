@@ -100,6 +100,43 @@ public class LinkedList{
         }
         return false; // Data not found in the list
     }
+
+    void print(){
+        Node current = head;
+        while(current != null){
+            System.out.print(current.data +" ");
+            current = current.next;
+        }
+        System.out.println();
+        System.out.println("Current Head "+head.data);
+        System.out.println("Current Tail "+tail.data);
+    }
+
+    void reverse(){
+        Node prev = null;
+        Node current = head;
+        Node oldHead = head;
+        while(current != null){
+            Node temp = current.next;
+            current.next = prev;
+            prev = current;
+            current = temp;
+        }
+        head = prev;  // Update head to the new front of the list
+        tail = oldHead;
+    }
+
+    public static void main(String args[]){
+        LinkedList ll = new LinkedList();
+        ll.insertLast(1);
+        ll.insertLast(2);
+        ll.insertLast(3);
+        ll.insertLast(4);
+        ll.insertLast(5);
+        ll.print();
+        ll.reverse();
+        ll.print();
+    }
 }
 
 class Node{
