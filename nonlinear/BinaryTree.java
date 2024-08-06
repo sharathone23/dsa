@@ -491,12 +491,104 @@ public class BinaryTree {
         }
     }
 
+    public Node getPredecessorOfInOrderTraversal(Node node){
+        if(node == null) return null;
+        if(node.left != null){
+            return getLastInInorderTraverse(node.left);
+        }else{
+            // traverse up the tree until we find a node where its parent.right == itself ( node.right.parent == node)
+            Node parent = node.parent;
+            while(parent!=null && parent.right != node){
+                node = parent;
+                parent = parent.parent;
+            }
+            return parent;
+        }
+    }
+
     public Node getFirstInInorderTraverse(Node node){
         if (node == null) return null;
         while (node.left != null) {
             node = node.left;
         }
         return node;
+    }
+
+    public Node getLastInInorderTraverse(Node node){
+        if (node == null) return null;
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    /**
+     * Inserts given newNode after node - as per In Order traversal
+     * @param node - non null
+     * @param newNode - non null
+     *                returns true if insert is success - false otherwise
+     */
+    public boolean subTreeInsertAfter(Node node, Node newNode){
+        if(node == null || newNode == null) return false;
+        if(node.right ==null){
+            node.right = newNode;
+            newNode.parent = node;
+        }else if(node.right!=null){
+            // insert left of getFirstInInorderTraverse(node.right)
+            Node leftMostNode = getFirstInInorderTraverse(node.right);
+            leftMostNode.left = newNode;
+            newNode.parent = leftMostNode;
+        }
+        return true;
+    }
+
+    /**
+     * Inserts given newNode before node - as per In Order traversal
+     * @param node - non null
+     * @param newNode - non null
+     *                returns true if insert is success - false otherwise
+     */
+    public boolean subTreeInsertBefore(Node node, Node newNode){
+        if(node == null || newNode == null) return false;
+        if(node.left ==null){
+            node.left = newNode;
+            newNode.parent = node;
+        }else if(node.left!=null){
+            // insert right of getLastInInorderTraverse(node.right)
+            Node rightMostNode = getLastInInorderTraverse(node.left);
+            rightMostNode.right = newNode;
+            newNode.parent = rightMostNode;
+        }
+        return true;
+    }
+
+
+    /**
+     * deletes given node by preserving the inorder traversal
+     * @param node - non null
+     */
+    public boolean delete(Node node){
+        if(node == null) return false;
+        if(node.left == null && node.right == null){
+            // detach from parent
+            if(node.parent.left == node) node.parent.left = null;
+            if(node.parent.right == node) node.parent.right = null;
+        }else if(node.left!=null){
+            // swap with predecessor of node and recurse delete on swapped node
+            Node predecessorNode = getPredecessorOfInOrderTraversal(node);
+            int temp = predecessorNode.data;
+            predecessorNode.data = node.data;
+            node.data = temp;
+            delete(predecessorNode);
+        }else{
+            // swap with successor of node and recurse delete on swapped node
+            Node successorNode = getSuccessorOfInOrderTraversal(node);
+            int temp = successorNode.data;
+            successorNode.data = node.data;
+            node.data = temp;
+            delete(successorNode);
+        }
+        return true;
     }
 
 
@@ -577,13 +669,14 @@ public class BinaryTree {
         node35.parent = node30;
 
         BinaryTree bTreeWithParent = new BinaryTree(root);
+        BinaryTree.printTreeHelper(root, 0);
         Node successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node10);
         System.out.println("Successor of node 10: " + (successor != null ? successor.data: "null"));
 
         successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node5);
         System.out.println("Successor of node 5: " + (successor != null ? successor.data : "null"));
 
-        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(root);
+        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(bTreeWithParent.root);
         System.out.println("Successor of root node 20: " + (successor != null ? successor.data : "null"));
 
         successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node35);
@@ -591,6 +684,62 @@ public class BinaryTree {
 
         successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node15);
         System.out.println("Successor of node 15: " + (successor != null ? successor.data : "null"));
+
+        Node predecessor = bTreeWithParent.getPredecessorOfInOrderTraversal(node10);
+        System.out.println("predecessor of node 10: " + (predecessor != null ? predecessor.data: "null"));
+
+        predecessor = bTreeWithParent.getPredecessorOfInOrderTraversal(bTreeWithParent.root);
+        System.out.println("predecessor of node 20(root): " + (predecessor != null ? predecessor.data : "null"));
+
+        predecessor = bTreeWithParent.getPredecessorOfInOrderTraversal(node25);
+        System.out.println("predecessor of node 25: " + (predecessor != null ? predecessor.data : "null"));
+
+        bTreeWithParent.subTreeInsertAfter(node35, new Node(40));
+        bTreeWithParent.subTreeInsertAfter(root, new Node(24));
+
+        System.out.println("After 40 InsertAfter 35 && 24 InsertAfter root(20)");
+        BinaryTree.printTreeHelper(root, 0);
+
+        bTreeWithParent.subTreeInsertBefore(node5, new Node(50));
+        bTreeWithParent.subTreeInsertBefore(root, new Node(55));
+
+        System.out.println("After 50 Insertbefore 5 && 55 insertbefore root(20)");
+        BinaryTree.printTreeHelper(bTreeWithParent.root, 0);
+
+        bTreeWithParent.delete(node10);
+
+        System.out.println("After deleting node 10");
+        BinaryTree.printTreeHelper(bTreeWithParent.root, 0);
+
+        bTreeWithParent.delete(root);
+
+        System.out.println("After deleting node 20 (root)");
+        BinaryTree.printTreeHelper(bTreeWithParent.root, 0);
+
+    }
+
+
+    //Prints root first as leftmost and righSubtree at top of root and leftsubtree as down of root
+    private static void printTreeHelper(Node node, int level) {
+        if (node == null) {
+            return;
+        }
+
+        // Print right subtree first (this will appear at the top when printed)
+        printTreeHelper(node.right, level + 1);
+
+        // Print the current node with appropriate spacing
+        printSpaces(4 * level);
+        System.out.println(node.data);
+
+        // Print left subtree
+        printTreeHelper(node.left, level + 1);
+    }
+
+    private static void printSpaces(int count) {
+        for (int i = 0; i < count; i++) {
+            System.out.print(" ");
+        }
     }
 
 
