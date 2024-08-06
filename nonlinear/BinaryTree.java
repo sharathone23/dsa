@@ -476,6 +476,29 @@ public class BinaryTree {
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
+    public Node getSuccessorOfInOrderTraversal(Node node){
+        if(node == null) return null;
+        if(node.right != null){
+            return getFirstInInorderTraverse(node.right);
+        }else{
+            // traverse up the tree until we find a node where its parent.left == itself (node.left.parent = node) => return node
+            Node parent = node.parent;
+            while(parent!=null && parent.left != node){
+                node = parent;
+                parent = parent.parent;
+            }
+            return parent;
+        }
+    }
+
+    public Node getFirstInInorderTraverse(Node node){
+        if (node == null) return null;
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
 
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree(new Node(1));
@@ -526,6 +549,48 @@ public class BinaryTree {
 
         System.out.println("-- getDiameter()");
         System.out.println(tree.getDiameter());
+
+
+
+        Node root = new Node(20);
+        Node node10 = new Node(10);
+        Node node30 = new Node(30);
+        Node node5 = new Node(5);
+        Node node15 = new Node(15);
+        Node node25 = new Node(25);
+        Node node35 = new Node(35);
+
+        // Connect nodes to form the tree
+        root.left = node10;
+        root.right = node30;
+        node10.parent = root;
+        node30.parent = root;
+
+        node10.left = node5;
+        node10.right = node15;
+        node5.parent = node10;
+        node15.parent = node10;
+
+        node30.left = node25;
+        node30.right = node35;
+        node25.parent = node30;
+        node35.parent = node30;
+
+        BinaryTree bTreeWithParent = new BinaryTree(root);
+        Node successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node10);
+        System.out.println("Successor of node 10: " + (successor != null ? successor.data: "null"));
+
+        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node5);
+        System.out.println("Successor of node 5: " + (successor != null ? successor.data : "null"));
+
+        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(root);
+        System.out.println("Successor of root node 20: " + (successor != null ? successor.data : "null"));
+
+        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node35);
+        System.out.println("Successor of node 35: " + (successor != null ? successor.data : "null"));
+
+        successor = bTreeWithParent.getSuccessorOfInOrderTraversal(node15);
+        System.out.println("Successor of node 15: " + (successor != null ? successor.data : "null"));
     }
 
 
@@ -534,6 +599,7 @@ public class BinaryTree {
 class Node{
     Node left;
     Node right;
+    Node parent;
     int data;
     public Node(int value){
         this.data = value;
