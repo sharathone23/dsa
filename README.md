@@ -18,9 +18,7 @@ flowchart RL
 ### [DoublyLinkedList](linear/DoublyLinkedList.java)
 ```mermaid
 flowchart LR
-    NL((null)) <-- prev --- A[1]
-    A <--> B[2] <--> C[3] <--> D[4]
-    D -- next --> NR((null))
+    NL((null)) --- A[1] <--> B[2] <--> C[3] <--> D[4] --- NR((null))
     H([head]) --> A
     T([tail]) --> D
 ```
