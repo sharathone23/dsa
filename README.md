@@ -1,19 +1,13 @@
 # Java Implementations of Fundamental Data Structures and Algorithms
 
-> Diagrams are [Mermaid](https://mermaid.js.org/). They render on GitHub, in IntelliJ (enable Mermaid in *Settings → Languages & Frameworks → Markdown*), and in VS Code with the *Markdown Preview Mermaid Support* extension.
-
 ## Linear
 
 ### [LinkedList](linear/LinkedList.java)
-Nodes point forward only. The `tail` reference makes `insertLast` O(1); `deleteLast` is still O(n) because we must walk to the node before `tail`.
-
 ```mermaid
 flowchart LR
     H([head]) --> A[1] --> B[2] --> C[3] --> D[4] --> E[5] --> N((null))
     T([tail]) --> E
 ```
-
-`reverse()` flips each `next` pointer using `prev / current / temp`:
 
 ```mermaid
 flowchart RL
@@ -22,8 +16,6 @@ flowchart RL
 ```
 
 ### [DoublyLinkedList](linear/DoublyLinkedList.java)
-Each `DNode` has `prev` and `next` (plus an optional `key` used by the LRU cache). Both `deleteFirst` and `deleteLast` are O(1).
-
 ```mermaid
 flowchart LR
     NL((null)) <-- prev --- A[1]
@@ -34,8 +26,6 @@ flowchart LR
 ```
 
 ### [Stack](linear/Stack.java)
-LIFO, built on `LinkedList`: `push` = `insertFirst`, `pop` = `deleteFirst`. The head is the top.
-
 ```mermaid
 flowchart TB
     P[/"push(4)"/] -.-> TOP
@@ -44,8 +34,6 @@ flowchart TB
 ```
 
 ### [Queue](linear/Queue.java)
-FIFO, built on `LinkedList`: `enqueue` = `insertLast` (tail), `dequeue` = `deleteFirst` (head).
-
 ```mermaid
 flowchart LR
     DQ[\"dequeue() → 1"\] -.- A
@@ -54,8 +42,6 @@ flowchart LR
 ```
 
 ### [Dequeue](linear/Dequeue.java)
-Double-ended queue on a `DoublyLinkedList`, so removing from either end is O(1).
-
 ```mermaid
 flowchart LR
     IF[/"insertFirst / removeFirst"/] <-.-> A
@@ -64,8 +50,6 @@ flowchart LR
 ```
 
 ### [LRUCache](linear/LRUCache.java)
-`HashMap<key, DNode>` gives O(1) lookup; the `DoublyLinkedList` keeps recency order. Head = most recently used, tail = next to evict.
-
 ```mermaid
 flowchart LR
     subgraph MAP["HashMap&lt;Integer, DNode&gt;"]
@@ -79,8 +63,6 @@ flowchart LR
     K1 --> N1
 ```
 
-`get(1)` unlinks node 1 and moves it to the front; `set(4, 40)` at capacity evicts the tail:
-
 ```mermaid
 flowchart LR
     S0["[3, 1]"] -->|"get(1)"| S1["[1, 3]"] -->|"set(4,40)<br/>evict tail 3"| S2["[4, 1]"]
@@ -89,8 +71,6 @@ flowchart LR
 ## Non Linear
 
 ### [Tree](nonlinear/Tree.java)
-N-ary tree: every `TNode` holds a `List<TNode> children`. `search` is a DFS over all children.
-
 ```mermaid
 flowchart TD
     R[1] --> A[2]
@@ -102,8 +82,6 @@ flowchart TD
 ```
 
 ### [BinaryTree](nonlinear/BinaryTree.java)
-At most two children (`left`, `right`), with an optional `parent` reference used for successor/predecessor.
-
 ```mermaid
 flowchart TD
     N1[1] --> N2[2]
@@ -114,20 +92,7 @@ flowchart TD
     N3 --> N7[7]
 ```
 
-| Traversal | Order | Output for the tree above |
-|---|---|---|
-| In-order | Left → Root → Right | `4 2 5 1 6 3 7` |
-| Pre-order | Root → Left → Right | `1 2 4 5 3 6 7` |
-| Post-order | Left → Right → Root | `4 5 2 6 7 3 1` |
-| Level order (BFS) | level by level | `1 2 3 4 5 6 7` |
-| Spiral | alternate direction per level | `1 3 2 4 5 6 7` |
-| Left view / Right view | first / last node per level | `1 2 4` / `1 3 7` |
-
-LCA: `findLCA` returns the node where `n1` and `n2` split into different subtrees. `getLCA(4, 5) = 2`, `getLCA(4, 6) = 1`. Height = 3, diameter (in nodes) = 5.
-
 ### [BinarySearchTree](nonlinear/BinarySearchTree.java)
-Invariant: `left < node < right`. Search, insert, and delete are O(h), where h is the tree's height. Highlighted: the path for `search(15)`.
-
 ```mermaid
 flowchart TD
     N20[20] --> N10[10]
@@ -140,8 +105,6 @@ flowchart TD
     class N20,N10,N15 path
 ```
 
-`delete` has three cases:
-
 ```mermaid
 flowchart LR
     D{"node to delete"} -->|no children| L["just remove it"]
@@ -149,11 +112,7 @@ flowchart LR
     D -->|two children| T["copy in-order successor's value<br/>(min of right subtree)<br/>then delete the successor"]
 ```
 
-In-order successor, with parent pointers: if a right subtree exists, take its leftmost node; otherwise walk up until you arrive from a left child. Successor of 15 = **20**, successor of 35 = **null**.
-
 ### [Trie](nonlinear/Trie.java)
-Each `TrieNode` maps `Character → TrieNode`; `isWord` marks where an inserted word ends. Shown after inserting `cat`, `car`, `card`, `dog`:
-
 ```mermaid
 flowchart TD
     ROOT(( )) --> C[c] --> A[a]
@@ -164,11 +123,7 @@ flowchart TD
     class T,R,D,G word
 ```
 
-`search("ca")` → false (not `isWord`), `startsWith("ca")` → true.
-
 ### [BinaryHeap](nonlinear/BinaryHeap.java)
-A complete binary tree stored in an array. For index `i`: parent `(i-1)/2`, left `2i+1`, right `2i+2`. Min-heap after inserting `10, 4, 9, 1, 7, 5, 3`:
-
 ```mermaid
 flowchart TD
     I0["1<br/>[0]"] --> I1["4<br/>[1]"]
@@ -184,12 +139,7 @@ flowchart LR
     A0["[0] 1"] --- A1["[1] 4"] --- A2["[2] 3"] --- A3["[3] 10"] --- A4["[4] 7"] --- A5["[5] 9"] --- A6["[6] 5"]
 ```
 
-- `insert` → put at the end, **heapifyUp** (swap with parent while smaller).
-- `extractMinOrMax` → swap root with last, shrink, **heapifyDown** (swap with the smaller child).
-
 ### [PriorityQueue](nonlinear/PriorityQueue.java)
-A thin wrapper over `BinaryHeap`: highest-priority element always at the root.
-
 ```mermaid
 flowchart LR
     E[/"enqueue(x)"/] --> H["BinaryHeap.insert<br/>O(log n)"]
@@ -199,8 +149,6 @@ flowchart LR
 ```
 
 ### [Graph](nonlinear/Graph.java)
-Adjacency list: `nodes` is a `List<GraphNode>`, each with `neighbours` and a `weightsMap`. Shared DFS/BFS traversal and BFS cycle detection (a visited neighbour that isn't your parent means a cycle).
-
 ```mermaid
 flowchart LR
     subgraph nodes["List&lt;GraphNode&gt; nodes"]
@@ -214,8 +162,6 @@ flowchart LR
 ```
 
 ### [UndirectedGraph](nonlinear/UndirectedGraph.java)
-`addEdge(v1, v2)` links both ways. `findShortestPath` is a BFS, so the distance = number of edges. From source **1**:
-
 ```mermaid
 flowchart LR
     N1(("1<br/>d=0")) --- N2(("2<br/>d=1"))
@@ -225,13 +171,7 @@ flowchart LR
     N4 --- N5(("5<br/>d=3"))
 ```
 
-BFS order: `1 2 3 4 5`.
-
 ### [DirectedGraph](nonlinear/DirectedGraph.java)
-**Cycle detection**: DFS with a `recursionStack`; reaching a node already on the stack = back edge = cycle.
-
-**Topological sort** (Kahn's algorithm): repeatedly take vertices with in-degree 0. For the DAG in `main`:
-
 ```mermaid
 flowchart LR
     V5((5)) --> V2((2))
@@ -241,10 +181,6 @@ flowchart LR
     V2 --> V3((3))
     V3 --> V1
 ```
-
-Order produced: `5 4 2 0 3 1`.
-
-**Shortest paths** on the weighted graph from `main` (source `0`). Dijkstra (non-negative weights, min-heap) and Bellman-Ford (relax every edge V−1 times, handles negative weights) agree:
 
 ```mermaid
 flowchart LR
@@ -258,38 +194,27 @@ flowchart LR
     W3 -- 1 --> W5
 ```
 
-Shortest path to 5: `0 → 1 → 2 → 4 → 3 → 5` = 2+1+3+2+1 = **9**.
-
 ## Sorting
-Every example below sorts `[5, 1, 4, 2]` and follows the steps of that file's implementation.
 
 ### [BubbleSort](sorting/BubbleSort.java)
-Swap adjacent out-of-order pairs; each pass bubbles the largest remaining value to the end. O(n²) time, O(1) space.
-
 ```mermaid
 flowchart LR
     S0["5 1 4 2"] -->|"pass 1"| S1["1 4 2 <b>5</b>"] -->|"pass 2"| S2["1 2 <b>4 5</b>"] -->|"pass 3"| S3["<b>1 2 4 5</b>"]
 ```
 
 ### [SelectionSort](sorting/SelectionSort.java)
-This version finds the **max** of the unsorted range and swaps it to the right end. O(n²) time, O(1) space.
-
 ```mermaid
 flowchart LR
     S0["5 1 4 2"] -->|"max 5 → end"| S1["2 1 4 <b>5</b>"] -->|"max 4 in place"| S2["2 1 <b>4 5</b>"] -->|"max 2 → idx 1"| S3["<b>1 2 4 5</b>"]
 ```
 
 ### [InsertionSort](sorting/InsertionSort.java)
-Take `key = input[i]` and shift larger elements right until key fits. O(n²) worst, O(n) on nearly sorted input.
-
 ```mermaid
 flowchart LR
     S0["5 | 1 4 2"] -->|"key 1"| S1["1 5 | 4 2"] -->|"key 4"| S2["1 4 5 | 2"] -->|"key 2"| S3["1 2 4 5"]
 ```
 
 ### [MergeSort](sorting/MergeSort.java)
-Divide in half until single elements, then merge sorted halves. O(n log n) time, O(n) space.
-
 ```mermaid
 flowchart TD
     A["5 1 4 2"] --> B["5 1"]
@@ -307,8 +232,6 @@ flowchart TD
 ```
 
 ### [QuickSort](sorting/QuickSort.java)
-Lomuto partition: pivot = last element; everything `<= pivot` moves left of index `i`, then the pivot is swapped into `i`. Average O(n log n), worst O(n²).
-
 ```mermaid
 flowchart TD
     A["5 1 4 <b>2</b><br/>pivot 2"] -->|"partition → p=1"| B["1 | <b>2</b> | 4 5"]
@@ -320,8 +243,6 @@ flowchart TD
 ```
 
 ### [HeapSort](sorting/HeapSort.java)
-Insert everything into a min `BinaryHeap`, then extract the min n times. O(n log n) time, O(n) extra space (this version is not in-place).
-
 ```mermaid
 flowchart LR
     I["insert 5,1,4,2"] --> H["heap array<br/>1 2 4 5"]
@@ -330,3 +251,4 @@ flowchart LR
     H2 -->|"extract 4"| H3["5"]
     H3 -->|"extract 5"| O["output<br/>1 2 4 5"]
 ```
+
